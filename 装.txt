@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+int c1, c2;
+int rest;
+int w[100];
+int x[100];
+int cw = 0, bestw = 0;
+int n;
+
+void Backtrack(int i){
+	if (i > n) {//到达叶子结点
+		if (cw > bestw) bestw = cw;
+		return;
+}
+	if (cw + w[i] <= c1) {
+		cw += w[i]; 
+		Backtrack(i + 1);
+		cw -= w[i]; //当节点i的子树延伸结束时要返回i节点
+	x[i] = 1;}
+	else
+	{
+Backtrack(i + 1); 
+x[i] = 0;
+	}
+}
+
+int MaxLoading(){
+	cout << "输入集装箱的个数:" << endl;
+	cin >> n;
+	cout << "分别输入这" << n << "个集装箱的质量" << endl;
+	for (int i = 1; i <= n; i++) cin >> w[i];
+	cout << "请输入第一个货船的载重量" << endl;
+	cin >> c1;
+	cout << "请输入第二个货船的载重量" << endl;
+	cin >> c2;
+	for (int i = 1; i <= n; i++) { rest += w[i]; x[i] = 0; }
+	Backtrack(1);
+	rest -= bestw;
+	if(rest<=c2){
+		cout << "c1可以装载总重量为" << bestw << "的集装箱" << endl;
+		for (int i = 1; i <= n; i++) if (x[i] == 1) cout << w[i] << " ";
+		cout << endl;
+		cout << "c2可以装载总重量为" << rest << "的集装箱" << endl;
+		for (int i = 1; i <= n; i++) if (x[i] != 1) cout << w[i] << " "; cout << endl;
+		cout << "2条货轮可以装下全部的货物"<< endl;
+	}
+	else
+	{
+		cout << "c1可以装载重量为" << bestw << "的集装箱" << endl;
+		cout << "剩下的货物重量为" << rest << endl;
+		cout <<"2条轮船不能装下所有货物" << endl;
+	}
+	return bestw;
+}
+
+
+int main() {
+	MaxLoading();
+	return 0;
+}
